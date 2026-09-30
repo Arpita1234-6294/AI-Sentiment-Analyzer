@@ -232,7 +232,7 @@ app.post("/predict", verifyToken, async (req, res) => {
 
     // Send text to Python ML API
 
-    const response = await axios.post("http://127.0.0.1:5000/predict", {
+    const response = await axios.post(`${process.env.FLASK_URL}/predict`, {
       text: text,
     });
 
