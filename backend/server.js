@@ -10,7 +10,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://ai-sentiment-analyzer-phi.vercel.app",
+      "https://ai-sentiment-analyzer-djw1tsiyg-arpita1234-6294s-projects.vercel.app",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
