@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = "https://ai-sentiment-analyzer-2-z67b.onrender.com";
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
 
   const [isLogin, setIsLogin] = useState(true);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [message, setMessage] = useState("");
 
   const [text, setText] = useState("");
@@ -29,11 +29,11 @@ function App() {
       if (!currentToken) return;
 
       const response = await axios.get(
-        "http://localhost:3000/history",
+        `${API_URL}/history`,
         {
           headers: {
-            Authorization: `Bearer ${currentToken}`
-          }
+            Authorization: `Bearer ${currentToken}`,
+          },
         }
       );
 
@@ -61,15 +61,14 @@ function App() {
     try {
       if (isLogin) {
         const response = await axios.post(
-          "http://localhost:3000/login",
+          `${API_URL}/login`,
           {
             email: email,
-            password: password
+            password: password,
           }
         );
 
         localStorage.setItem("token", response.data.token);
-
         setToken(response.data.token);
 
         setMessage("Login successful 🎉");
@@ -78,11 +77,11 @@ function App() {
         setPassword("");
       } else {
         const response = await axios.post(
-          "http://localhost:3000/register",
+          `${API_URL}/register`,
           {
             name: name,
             email: email,
-            password: password
+            password: password,
           }
         );
 
@@ -131,19 +130,18 @@ function App() {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/predict",
+        `${API_URL}/predict`,
         {
-          text: text
+          text: text,
         },
         {
           headers: {
-            Authorization: `Bearer ${currentToken}`
-          }
+            Authorization: `Bearer ${currentToken}`,
+          },
         }
       );
 
       setResult(response.data.sentiment);
-
       setConfidence(response.data.confidence);
 
       await getHistory();
@@ -155,7 +153,6 @@ function App() {
 
       if (error.response?.status === 401) {
         localStorage.removeItem("token");
-
         setToken(null);
 
         setMessage(
@@ -180,7 +177,6 @@ function App() {
     localStorage.removeItem("token");
 
     setToken(null);
-
     setResult("");
     setConfidence(null);
     setHistory([]);
@@ -196,6 +192,8 @@ function App() {
       getHistory();
     }
   }, [token]);
+
+
 
   // ============================================================
   // LOGIN / REGISTER PAGE
@@ -611,7 +609,6 @@ function App() {
     </div>
   );
 }
-
 
 // ============================================================
 // STYLES
